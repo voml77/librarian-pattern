@@ -1,0 +1,509 @@
+{
+  "configuration" : { },
+  "description" : "Separating probabilistic interpretation from authoritative state change.",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedDate" : "2026-09-12T15:11:30Z",
+  "model" : {
+    "softwareSystems" : [ {
+      "description" : "Raw or untrusted information such as interactions, documents, research findings, or external data.",
+      "documentation" : { },
+      "id" : "1",
+      "name" : "Source",
+      "properties" : {
+        "structurizr.dsl.identifier" : "source"
+      },
+      "relationships" : [ {
+        "description" : "Provides raw information",
+        "destinationId" : "2",
+        "id" : "16",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Uses probabilistic interpretation to extract, classify, normalize, compress, and propose structured information.",
+      "documentation" : { },
+      "id" : "2",
+      "name" : "LLM Librarian",
+      "properties" : {
+        "structurizr.dsl.identifier" : "librarian"
+      },
+      "relationships" : [ {
+        "description" : "Proposes structured interpretation — no authority granted",
+        "destinationId" : "4",
+        "id" : "17",
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Proposes structured interpretation — no authority granted",
+        "destinationId" : "3",
+        "id" : "18",
+        "linkedRelationshipId" : "17",
+        "sourceId" : "2"
+      } ],
+      "tags" : "Element,Software System,Probabilistic"
+    }, {
+      "containers" : [ {
+        "description" : "Deterministically validates schema, types, domains, classifications, and constraints.",
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Proposal Validator",
+        "properties" : {
+          "structurizr.dsl.identifier" : "validator"
+        },
+        "relationships" : [ {
+          "description" : "Passes admissible proposal",
+          "destinationId" : "5",
+          "id" : "19",
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Deterministic Policy"
+      }, {
+        "description" : "Creates governed candidates and attaches system-owned identity and provenance.",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Candidate Factory",
+        "properties" : {
+          "structurizr.dsl.identifier" : "candidateFactory"
+        },
+        "relationships" : [ {
+          "description" : "Persists candidate with system-owned identity and provenance",
+          "destinationId" : "6",
+          "id" : "20",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Service",
+        "technology" : "Deterministic Service"
+      }, {
+        "description" : "Persists validated candidates without granting canonical authority.",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Candidate Store",
+        "properties" : {
+          "structurizr.dsl.identifier" : "candidateStore"
+        },
+        "relationships" : [ {
+          "description" : "Provides candidate for evaluation",
+          "destinationId" : "7",
+          "id" : "21",
+          "sourceId" : "6",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,AuthoritativeStore",
+        "technology" : "Authoritative Store"
+      }, {
+        "description" : "Determines whether a candidate may become a canonical artifact.",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "Promotion Policy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "promotionPolicy"
+        },
+        "relationships" : [ {
+          "description" : "Promotes approved candidate",
+          "destinationId" : "8",
+          "id" : "22",
+          "sourceId" : "7",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Deterministic Policy"
+      }, {
+        "description" : "Stores canonical artifacts and owns their authoritative lifecycle and activation state.",
+        "documentation" : { },
+        "id" : "8",
+        "name" : "Canonical Store",
+        "properties" : {
+          "structurizr.dsl.identifier" : "canonicalStore"
+        },
+        "relationships" : [ {
+          "description" : "Submits canonical artifact for activation decision",
+          "destinationId" : "9",
+          "id" : "23",
+          "sourceId" : "8",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Provides active canonical lifecycle state",
+          "destinationId" : "10",
+          "id" : "25",
+          "sourceId" : "8",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Personal Memory: requires explicit user consent",
+          "destinationId" : "13",
+          "id" : "28",
+          "sourceId" : "8",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Personal Memory: requires explicit user consent",
+          "destinationId" : "12",
+          "id" : "29",
+          "linkedRelationshipId" : "28",
+          "sourceId" : "8"
+        }, {
+          "description" : "Knowledge: requires trusted provenance",
+          "destinationId" : "14",
+          "id" : "32",
+          "sourceId" : "8",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,AuthoritativeStore",
+        "technology" : "Authoritative Store"
+      }, {
+        "description" : "Applies domain-specific authority rules that determine whether a canonical artifact may become active, such as explicit consent or trusted provenance.",
+        "documentation" : { },
+        "id" : "9",
+        "name" : "Activation Policy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "activationPolicy"
+        },
+        "relationships" : [ {
+          "description" : "Updates canonical activation state",
+          "destinationId" : "8",
+          "id" : "24",
+          "sourceId" : "9",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Deterministic Policy"
+      }, {
+        "description" : "Derives retrieval eligibility exclusively from canonical lifecycle state.",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "Retrieval Eligibility Policy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "retrievalPolicy"
+        },
+        "relationships" : [ {
+          "description" : "Synchronizes retrieval-eligible artifacts",
+          "destinationId" : "11",
+          "id" : "26",
+          "sourceId" : "10",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Deterministic Policy"
+      } ],
+      "description" : "Owns validation, provenance, lifecycle transitions, authority decisions, and canonical state.",
+      "documentation" : { },
+      "id" : "3",
+      "name" : "Governed Knowledge Lifecycle",
+      "properties" : {
+        "structurizr.dsl.identifier" : "governedState"
+      },
+      "relationships" : [ {
+        "description" : "Synchronizes retrieval-eligible artifacts",
+        "destinationId" : "11",
+        "id" : "27",
+        "linkedRelationshipId" : "26",
+        "sourceId" : "3"
+      }, {
+        "description" : "Personal Memory: requires explicit user consent",
+        "destinationId" : "13",
+        "id" : "30",
+        "linkedRelationshipId" : "28",
+        "sourceId" : "3"
+      }, {
+        "description" : "Personal Memory: requires explicit user consent",
+        "destinationId" : "12",
+        "id" : "31",
+        "linkedRelationshipId" : "28",
+        "sourceId" : "3"
+      }, {
+        "description" : "Knowledge: requires trusted provenance",
+        "destinationId" : "14",
+        "id" : "33",
+        "linkedRelationshipId" : "32",
+        "sourceId" : "3"
+      } ],
+      "tags" : "Element,Software System,Governed"
+    }, {
+      "description" : "Reflects retrieval-eligible canonical state for semantic or other derived retrieval mechanisms.",
+      "documentation" : { },
+      "id" : "11",
+      "name" : "Derived Index",
+      "properties" : {
+        "structurizr.dsl.identifier" : "derivedIndex"
+      },
+      "tags" : "Element,Software System,Derived"
+    }, {
+      "containers" : [ {
+        "description" : "Requires explicit user consent before canonical personal memory may become active.",
+        "documentation" : { },
+        "id" : "13",
+        "name" : "Personal Memory Activation Policy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "personalMemoryPolicy"
+        },
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Domain-Specific Policy"
+      }, {
+        "description" : "Requires trusted provenance before canonical knowledge may become active.",
+        "documentation" : { },
+        "id" : "14",
+        "name" : "Knowledge Activation Policy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "knowledgePolicy"
+        },
+        "relationships" : [ {
+          "description" : "Active canonical knowledge",
+          "destinationId" : "15",
+          "id" : "34",
+          "sourceId" : "14",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Domain-Specific Policy"
+      }, {
+        "description" : "Determines whether active canonical knowledge is eligible for retrieval.",
+        "documentation" : { },
+        "id" : "15",
+        "name" : "Retrieval Eligibility",
+        "properties" : {
+          "structurizr.dsl.identifier" : "domainRetrievalPolicy"
+        },
+        "relationships" : [ {
+          "description" : "Synchronizes retrieval-eligible knowledge",
+          "destinationId" : "11",
+          "id" : "35",
+          "sourceId" : "15",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Governed,Policy",
+        "technology" : "Deterministic Policy"
+      } ],
+      "description" : "Reference examples showing how activation and retrieval authority can differ by domain.",
+      "documentation" : { },
+      "id" : "12",
+      "name" : "Domain-Specific Authority",
+      "properties" : {
+        "structurizr.dsl.identifier" : "domainAuthority"
+      },
+      "relationships" : [ {
+        "description" : "Synchronizes retrieval-eligible knowledge",
+        "destinationId" : "11",
+        "id" : "36",
+        "linkedRelationshipId" : "35",
+        "sourceId" : "12"
+      } ],
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "The Librarian Pattern",
+  "properties" : {
+    "structurizr.inspection.error" : "28",
+    "structurizr.dsl" : "d29ya3NwYWNlICJUaGUgTGlicmFyaWFuIFBhdHRlcm4iICJTZXBhcmF0aW5nIHByb2JhYmlsaXN0aWMgaW50ZXJwcmV0YXRpb24gZnJvbSBhdXRob3JpdGF0aXZlIHN0YXRlIGNoYW5nZS4iIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc291cmNlID0gc29mdHdhcmVTeXN0ZW0gIlNvdXJjZSIgIlJhdyBvciB1bnRydXN0ZWQgaW5mb3JtYXRpb24gc3VjaCBhcyBpbnRlcmFjdGlvbnMsIGRvY3VtZW50cywgcmVzZWFyY2ggZmluZGluZ3MsIG9yIGV4dGVybmFsIGRhdGEuIgoKICAgICAgICBsaWJyYXJpYW4gPSBzb2Z0d2FyZVN5c3RlbSAiTExNIExpYnJhcmlhbiIgIlVzZXMgcHJvYmFiaWxpc3RpYyBpbnRlcnByZXRhdGlvbiB0byBleHRyYWN0LCBjbGFzc2lmeSwgbm9ybWFsaXplLCBjb21wcmVzcywgYW5kIHByb3Bvc2Ugc3RydWN0dXJlZCBpbmZvcm1hdGlvbi4iIHsKICAgICAgICAgICAgdGFncyAiUHJvYmFiaWxpc3RpYyIKICAgICAgICB9CgogICAgICAgIGdvdmVybmVkU3RhdGUgPSBzb2Z0d2FyZVN5c3RlbSAiR292ZXJuZWQgS25vd2xlZGdlIExpZmVjeWNsZSIgIk93bnMgdmFsaWRhdGlvbiwgcHJvdmVuYW5jZSwgbGlmZWN5Y2xlIHRyYW5zaXRpb25zLCBhdXRob3JpdHkgZGVjaXNpb25zLCBhbmQgY2Fub25pY2FsIHN0YXRlLiIgewogICAgICAgICAgICB0YWdzICJHb3Zlcm5lZCIKCiAgICAgICAgICAgIHZhbGlkYXRvciA9IGNvbnRhaW5lciAiUHJvcG9zYWwgVmFsaWRhdG9yIiAiRGV0ZXJtaW5pc3RpY2FsbHkgdmFsaWRhdGVzIHNjaGVtYSwgdHlwZXMsIGRvbWFpbnMsIGNsYXNzaWZpY2F0aW9ucywgYW5kIGNvbnN0cmFpbnRzLiIgIkRldGVybWluaXN0aWMgUG9saWN5IiB7CiAgICAgICAgICAgICAgICB0YWdzICJHb3Zlcm5lZCxQb2xpY3kiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGNhbmRpZGF0ZUZhY3RvcnkgPSBjb250YWluZXIgIkNhbmRpZGF0ZSBGYWN0b3J5IiAiQ3JlYXRlcyBnb3Zlcm5lZCBjYW5kaWRhdGVzIGFuZCBhdHRhY2hlcyBzeXN0ZW0tb3duZWQgaWRlbnRpdHkgYW5kIHByb3ZlbmFuY2UuIiAiRGV0ZXJtaW5pc3RpYyBTZXJ2aWNlIiB7CiAgICAgICAgICAgICAgICB0YWdzICJHb3Zlcm5lZCxTZXJ2aWNlIgogICAgICAgICAgICB9CgogICAgICAgICAgICBjYW5kaWRhdGVTdG9yZSA9IGNvbnRhaW5lciAiQ2FuZGlkYXRlIFN0b3JlIiAiUGVyc2lzdHMgdmFsaWRhdGVkIGNhbmRpZGF0ZXMgd2l0aG91dCBncmFudGluZyBjYW5vbmljYWwgYXV0aG9yaXR5LiIgIkF1dGhvcml0YXRpdmUgU3RvcmUiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkdvdmVybmVkLEF1dGhvcml0YXRpdmVTdG9yZSIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgcHJvbW90aW9uUG9saWN5ID0gY29udGFpbmVyICJQcm9tb3Rpb24gUG9saWN5IiAiRGV0ZXJtaW5lcyB3aGV0aGVyIGEgY2FuZGlkYXRlIG1heSBiZWNvbWUgYSBjYW5vbmljYWwgYXJ0aWZhY3QuIiAiRGV0ZXJtaW5pc3RpYyBQb2xpY3kiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkdvdmVybmVkLFBvbGljeSIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgY2Fub25pY2FsU3RvcmUgPSBjb250YWluZXIgIkNhbm9uaWNhbCBTdG9yZSIgIlN0b3JlcyBjYW5vbmljYWwgYXJ0aWZhY3RzIGFuZCBvd25zIHRoZWlyIGF1dGhvcml0YXRpdmUgbGlmZWN5Y2xlIGFuZCBhY3RpdmF0aW9uIHN0YXRlLiIgIkF1dGhvcml0YXRpdmUgU3RvcmUiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkdvdmVybmVkLEF1dGhvcml0YXRpdmVTdG9yZSIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgYWN0aXZhdGlvblBvbGljeSA9IGNvbnRhaW5lciAiQWN0aXZhdGlvbiBQb2xpY3kiICJBcHBsaWVzIGRvbWFpbi1zcGVjaWZpYyBhdXRob3JpdHkgcnVsZXMgdGhhdCBkZXRlcm1pbmUgd2hldGhlciBhIGNhbm9uaWNhbCBhcnRpZmFjdCBtYXkgYmVjb21lIGFjdGl2ZSwgc3VjaCBhcyBleHBsaWNpdCBjb25zZW50IG9yIHRydXN0ZWQgcHJvdmVuYW5jZS4iICJEZXRlcm1pbmlzdGljIFBvbGljeSIgewogICAgICAgICAgICAgICAgdGFncyAiR292ZXJuZWQsUG9saWN5IgogICAgICAgICAgICB9CgogICAgICAgICAgICByZXRyaWV2YWxQb2xpY3kgPSBjb250YWluZXIgIlJldHJpZXZhbCBFbGlnaWJpbGl0eSBQb2xpY3kiICJEZXJpdmVzIHJldHJpZXZhbCBlbGlnaWJpbGl0eSBleGNsdXNpdmVseSBmcm9tIGNhbm9uaWNhbCBsaWZlY3ljbGUgc3RhdGUuIiAiRGV0ZXJtaW5pc3RpYyBQb2xpY3kiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkdvdmVybmVkLFBvbGljeSIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgZGVyaXZlZEluZGV4ID0gc29mdHdhcmVTeXN0ZW0gIkRlcml2ZWQgSW5kZXgiICJSZWZsZWN0cyByZXRyaWV2YWwtZWxpZ2libGUgY2Fub25pY2FsIHN0YXRlIGZvciBzZW1hbnRpYyBvciBvdGhlciBkZXJpdmVkIHJldHJpZXZhbCBtZWNoYW5pc21zLiIgewogICAgICAgICAgICB0YWdzICJEZXJpdmVkIgogICAgICAgIH0KCiAgICAgICAgZG9tYWluQXV0aG9yaXR5ID0gc29mdHdhcmVTeXN0ZW0gIkRvbWFpbi1TcGVjaWZpYyBBdXRob3JpdHkiICJSZWZlcmVuY2UgZXhhbXBsZXMgc2hvd2luZyBob3cgYWN0aXZhdGlvbiBhbmQgcmV0cmlldmFsIGF1dGhvcml0eSBjYW4gZGlmZmVyIGJ5IGRvbWFpbi4iIHsKICAgICAgICAgICAgCiAgICAgICAgICAgIHBlcnNvbmFsTWVtb3J5UG9saWN5ID0gY29udGFpbmVyICJQZXJzb25hbCBNZW1vcnkgQWN0aXZhdGlvbiBQb2xpY3kiICJSZXF1aXJlcyBleHBsaWNpdCB1c2VyIGNvbnNlbnQgYmVmb3JlIGNhbm9uaWNhbCBwZXJzb25hbCBtZW1vcnkgbWF5IGJlY29tZSBhY3RpdmUuIiAiRG9tYWluLVNwZWNpZmljIFBvbGljeSIgewogICAgICAgICAgICAgICAgdGFncyAiR292ZXJuZWQsUG9saWN5IgogICAgICAgICAgICB9CgogICAgICAgICAgICBrbm93bGVkZ2VQb2xpY3kgPSBjb250YWluZXIgIktub3dsZWRnZSBBY3RpdmF0aW9uIFBvbGljeSIgIlJlcXVpcmVzIHRydXN0ZWQgcHJvdmVuYW5jZSBiZWZvcmUgY2Fub25pY2FsIGtub3dsZWRnZSBtYXkgYmVjb21lIGFjdGl2ZS4iICJEb21haW4tU3BlY2lmaWMgUG9saWN5IiB7CiAgICAgICAgICAgICAgICB0YWdzICJHb3Zlcm5lZCxQb2xpY3kiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGRvbWFpblJldHJpZXZhbFBvbGljeSA9IGNvbnRhaW5lciAiUmV0cmlldmFsIEVsaWdpYmlsaXR5IiAiRGV0ZXJtaW5lcyB3aGV0aGVyIGFjdGl2ZSBjYW5vbmljYWwga25vd2xlZGdlIGlzIGVsaWdpYmxlIGZvciByZXRyaWV2YWwuIiAiRGV0ZXJtaW5pc3RpYyBQb2xpY3kiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkdvdmVybmVkLFBvbGljeSIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgc291cmNlIC0+IGxpYnJhcmlhbiAiUHJvdmlkZXMgcmF3IGluZm9ybWF0aW9uIgogICAgICAgIGxpYnJhcmlhbiAtPiB2YWxpZGF0b3IgIlByb3Bvc2VzIHN0cnVjdHVyZWQgaW50ZXJwcmV0YXRpb24g4oCUIG5vIGF1dGhvcml0eSBncmFudGVkIgoKICAgICAgICB2YWxpZGF0b3IgLT4gY2FuZGlkYXRlRmFjdG9yeSAiUGFzc2VzIGFkbWlzc2libGUgcHJvcG9zYWwiCiAgICAgICAgY2FuZGlkYXRlRmFjdG9yeSAtPiBjYW5kaWRhdGVTdG9yZSAiUGVyc2lzdHMgY2FuZGlkYXRlIHdpdGggc3lzdGVtLW93bmVkIGlkZW50aXR5IGFuZCBwcm92ZW5hbmNlIgoKICAgICAgICBjYW5kaWRhdGVTdG9yZSAtPiBwcm9tb3Rpb25Qb2xpY3kgIlByb3ZpZGVzIGNhbmRpZGF0ZSBmb3IgZXZhbHVhdGlvbiIKICAgICAgICBwcm9tb3Rpb25Qb2xpY3kgLT4gY2Fub25pY2FsU3RvcmUgIlByb21vdGVzIGFwcHJvdmVkIGNhbmRpZGF0ZSIKCiAgICAgICAgY2Fub25pY2FsU3RvcmUgLT4gYWN0aXZhdGlvblBvbGljeSAiU3VibWl0cyBjYW5vbmljYWwgYXJ0aWZhY3QgZm9yIGFjdGl2YXRpb24gZGVjaXNpb24iCiAgICAgICAgYWN0aXZhdGlvblBvbGljeSAtPiBjYW5vbmljYWxTdG9yZSAiVXBkYXRlcyBjYW5vbmljYWwgYWN0aXZhdGlvbiBzdGF0ZSIKCiAgICAgICAgY2Fub25pY2FsU3RvcmUgLT4gcmV0cmlldmFsUG9saWN5ICJQcm92aWRlcyBhY3RpdmUgY2Fub25pY2FsIGxpZmVjeWNsZSBzdGF0ZSIKICAgICAgICByZXRyaWV2YWxQb2xpY3kgLT4gZGVyaXZlZEluZGV4ICJTeW5jaHJvbml6ZXMgcmV0cmlldmFsLWVsaWdpYmxlIGFydGlmYWN0cyIKCiAgICAgICAgY2Fub25pY2FsU3RvcmUgLT4gcGVyc29uYWxNZW1vcnlQb2xpY3kgIlBlcnNvbmFsIE1lbW9yeTogcmVxdWlyZXMgZXhwbGljaXQgdXNlciBjb25zZW50IgogICAgICAgIGNhbm9uaWNhbFN0b3JlIC0+IGtub3dsZWRnZVBvbGljeSAiS25vd2xlZGdlOiByZXF1aXJlcyB0cnVzdGVkIHByb3ZlbmFuY2UiCgogICAgICAgIGtub3dsZWRnZVBvbGljeSAtPiBkb21haW5SZXRyaWV2YWxQb2xpY3kgIkFjdGl2ZSBjYW5vbmljYWwga25vd2xlZGdlIgogICAgICAgIGRvbWFpblJldHJpZXZhbFBvbGljeSAtPiBkZXJpdmVkSW5kZXggIlN5bmNocm9uaXplcyByZXRyaWV2YWwtZWxpZ2libGUga25vd2xlZGdlIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1MYW5kc2NhcGUgIkxpYnJhcmlhblBhdHRlcm5PdmVydmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b0xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIGdvdmVybmVkU3RhdGUgIkdvdmVybmVkTGlmZWN5Y2xlIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvTGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBjb250YWluZXIgZG9tYWluQXV0aG9yaXR5ICJEb21haW5TcGVjaWZpY0F1dGhvcml0eSIgewogICAgICAgICAgICBpbmNsdWRlIGNhbm9uaWNhbFN0b3JlCiAgICAgICAgICAgIGluY2x1ZGUgcGVyc29uYWxNZW1vcnlQb2xpY3kKICAgICAgICAgICAgaW5jbHVkZSBrbm93bGVkZ2VQb2xpY3kKICAgICAgICAgICAgaW5jbHVkZSBkb21haW5SZXRyaWV2YWxQb2xpY3kKICAgICAgICAgICAgaW5jbHVkZSBkZXJpdmVkSW5kZXgKICAgICAgICAgICAgYXV0b0xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiUHJvYmFiaWxpc3RpYyIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjM0I4MkY2CiAgICAgICAgICAgICAgICBjb2xvciAjRkZGRkZGCiAgICAgICAgICAgICAgICBzdHJva2UgIzI1NjNFQgogICAgICAgICAgICB9CgogICAgICAgICAgICBlbGVtZW50ICJHb3Zlcm5lZCIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjRjBGREY0CiAgICAgICAgICAgICAgICBjb2xvciAjMTQ1MzJECiAgICAgICAgICAgICAgICBzdHJva2UgIzg2Qjg5QQogICAgICAgICAgICB9CgogICAgICAgICAgICBlbGVtZW50ICJQb2xpY3kiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI0VDRkRGNQogICAgICAgICAgICAgICAgY29sb3IgIzE0NTMyRAogICAgICAgICAgICAgICAgc3Ryb2tlICM4NkI4OUEKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZWxlbWVudCAiU2VydmljZSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjRjBGREY0CiAgICAgICAgICAgICAgICBjb2xvciAjMTQ1MzJECiAgICAgICAgICAgICAgICBzdHJva2UgIzg2Qjg5QQogICAgICAgICAgICB9CgogICAgICAgICAgICBlbGVtZW50ICJBdXRob3JpdGF0aXZlU3RvcmUiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI0QxRkFFNQogICAgICAgICAgICAgICAgY29sb3IgIzA2NEUzQgogICAgICAgICAgICAgICAgc3Ryb2tlICM0Nzg1NkQKICAgICAgICAgICAgICAgIHNoYXBlIEN5bGluZGVyCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGVsZW1lbnQgIkRlcml2ZWQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI0U1RTdFQgogICAgICAgICAgICAgICAgY29sb3IgIzM3NDE1MQogICAgICAgICAgICAgICAgc3Ryb2tlICM5Q0EzQUYKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ==",
+    "structurizr.inspection.info" : "0",
+    "structurizr.inspection.ignore" : "0",
+    "structurizr.inspection.warning" : "0"
+  },
+  "views" : {
+    "configuration" : {
+      "styles" : {
+        "elements" : [ {
+          "background" : "#d1fae5",
+          "color" : "#064e3b",
+          "shape" : "Cylinder",
+          "stroke" : "#47856d",
+          "tag" : "AuthoritativeStore"
+        }, {
+          "background" : "#e5e7eb",
+          "color" : "#374151",
+          "stroke" : "#9ca3af",
+          "tag" : "Derived"
+        }, {
+          "background" : "#f0fdf4",
+          "color" : "#14532d",
+          "stroke" : "#86b89a",
+          "tag" : "Governed"
+        }, {
+          "background" : "#ecfdf5",
+          "color" : "#14532d",
+          "stroke" : "#86b89a",
+          "tag" : "Policy"
+        }, {
+          "background" : "#3b82f6",
+          "color" : "#ffffff",
+          "stroke" : "#2563eb",
+          "tag" : "Probabilistic"
+        }, {
+          "background" : "#f0fdf4",
+          "color" : "#14532d",
+          "stroke" : "#86b89a",
+          "tag" : "Service"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "elements" : [ {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "GovernedLifecycle",
+      "name" : "Container View: Governed Knowledge Lifecycle",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "17"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "36"
+      } ],
+      "softwareSystemId" : "3"
+    }, {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "elements" : [ {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "DomainSpecificAuthority",
+      "name" : "Container View: Domain-Specific Authority",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "28"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      } ],
+      "softwareSystemId" : "12"
+    } ],
+    "systemLandscapeViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "LibrarianPatternOverview",
+      "name" : "System Landscape View",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "16"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "36"
+      } ]
+    } ]
+  }
+}
